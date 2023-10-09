@@ -1,0 +1,149 @@
+#include <windows.h>
+
+// 전역 변수
+HINSTANCE hInst;
+HWND hwndMain;
+BOOL isDrawing = FALSE; // 현재 그리기 중인지 여부를 나타내는 변수
+POINT startPoint, endPoint; // 시작점과 끝점 저장
+int currentShape = 0; // 현재 그릴 도형을 나타내는 변수 (0: 사각형, 1: 삼각형, 2: 원)
+
+// 윈도우 프로시저 함수
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+int WINAPI WinMain(
+    _In_ HINSTANCE hInstance,
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPSTR lpCmdLine,
+    _In_ int nCmdShow)
+{
+    hInst = hInstance;
+
+    // 윈도우 클래스 등록
+    WNDCLASSEX wcex = { sizeof(WNDCLASSEX), CS_HREDRAW | CS_VREDRAW, WindowProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, L"ShapeDrawingApp", NULL };
+    RegisterClassEx(&wcex);
+
+    // 윈도우 생성
+    hwndMain = CreateWindow(L"ShapeDrawingApp", L"Shape Drawing App", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 800, 600, NULL, NULL, hInstance, NULL);
+
+    ShowWindow(hwndMain, nCmdShow);
+    UpdateWindow(hwndMain);
+
+    // 메시지 루프
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    return (int)msg.wParam;
+}
+
+// 윈도우 프로시저 함수 정의
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg)
+    {
+    case WM_LBUTTONDOWN:
+        // 마우스 왼쪽 버튼이 눌렸을 때 시작점 설정
+        startPoint.x = LOWORD(lParam);
+        startPoint.y = HIWORD(lParam);
+        isDrawing = TRUE;
+        return 0;
+
+    case WM_MOUSEMOVE:
+        // 마우스가 움직일 때 그림을 그리기
+        if (isDrawing)
+        {
+            HDC hdc = GetDC(hwnd);
+            endPoint.x = LOWORD(lParam);
+            endPoint.y = HIWORD(lParam);
+
+            // 현재 선택된 도형 그리기
+            switch (currentShape)
+            {
+            case 0: // 사각형 그리기
+            {
+                Rectangle(hdc, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+                break;
+            }
+            case 1: // 삼각형 그리기
+            {
+                POINT points[3];
+                points[0].x = startPoint.x + (endPoint.x - startPoint.x) / 2;
+                points[0].y = startPoint.y;
+                points[1].x = startPoint.x;
+                points[1].y = endPoint.y;
+                points[2].x = endPoint.x;
+                points[2].y = endPoint.y;
+
+                HDC hdcTriangle = GetDC(hwnd);
+
+                // Polygon 함수를 사용하여 삼각형을 그립니다.
+                Polygon(hdcTriangle, points, 3);
+
+                ReleaseDC(hwnd, hdcTriangle);
+                break;
+            }
+
+            case 2: // 원 그리기
+            {
+                // 원을 그리기 위한 사각형 영역을 계산합니다.
+                int radius = abs(startPoint.x - endPoint.x) / 2;
+                int centerX = (startPoint.x + endPoint.x) / 2;
+                int centerY = (startPoint.y + endPoint.y) / 2;
+
+                HDC hdcCircle = GetDC(hwnd);
+
+                // Ellipse 함수를 사용하여 원을 그립니다.
+                Ellipse(hdcCircle, centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+
+                ReleaseDC(hwnd, hdcCircle);
+                break;
+            }
+            }
+
+            ReleaseDC(hwnd, hdc);
+        }
+        return 0;
+
+    case WM_LBUTTONUP:
+        // 마우스 왼쪽 버튼이 놓였을 때 그리기 종료
+        isDrawing = FALSE;
+        return 0;
+
+    case WM_KEYDOWN:
+        // 키보드 입력을 처리하여 현재 그릴 도형을 변경합니다.
+        switch (wParam)
+        {
+        case 'R': // 'R' 키를 누르면 사각형 모드로 전환
+            currentShape = 0;
+            break;
+        case 'T': // 'T' 키를 누르면 삼각형 모드로 전환
+            currentShape = 1;
+            break;
+        case 'C': // 'C' 키를 누르면 원 모드로 전환
+            currentShape = 2;
+            break;
+        }
+
+        return 0;
+
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hwnd, &ps);
+
+        // 화면을 다시 그리는 작업 (현재는 필요 없음)
+
+        EndPaint(hwnd, &ps);
+        return 0;
+    }
+
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        return 0;
+    }
+
+    return DefWindowProc(hwnd, uMsg, wParam, lParam);
+}
