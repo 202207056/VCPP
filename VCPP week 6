@@ -1,0 +1,166 @@
+#ifdef UNICODE
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#else
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#endif
+
+#include <windows.h>
+
+// 초기 사용자 및 타겟 위치 및 키 상태를 정의합니다.
+POINT startPoint = { 0 };
+POINT endPoint = { 0 };
+int isKeyPressed = 0;
+
+RECT rect_user = { 5, 5, 10, 10 }; // 사용자 사각형의 초기 위치 및 크기를 정의합니다.
+RECT rect_target = { 50, 50, 150, 150 }; // 타겟 사각형의 초기 위치 및 크기를 정의합니다.
+
+// 윈도우의 이벤트를 처리하는 콜백(Callback) 함수를 정의합니다.
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    HDC hdc = GetDC(hwnd); // 윈도우 디바이스 컨텍스트를 얻어옵니다.
+
+    HBRUSH hBrush_user = CreateSolidBrush(RGB(0, 0, 255)); // 사용자 사각형을 채우는 파란 브러시를 생성합니다.
+    HBRUSH hBrush_target = CreateSolidBrush(RGB(255, 0, 255)); // 타겟 사각형을 채우는 핑크 브러시를 생성합니다.
+    HBRUSH hBrush_eraser = CreateSolidBrush(RGB(255, 255, 255)); // 화면을 지우는 브러시를 생성합니다.
+    const wchar_t* text = L"Crash!!!"; // "Crash!!!" 텍스트를 정의합니다.
+
+    switch (uMsg)
+    {
+    case WM_KEYDOWN:
+        isKeyPressed = 1; // 키가 눌렸음을 나타내는 플래그를 설정합니다.
+        switch (wParam) {
+        case VK_LEFT:
+            rect_user.left -= 5;  // 사용자를 왼쪽으로 이동시킵니다.
+            rect_user.right -= 5;
+            break;
+        case VK_RIGHT:
+            rect_user.left += 5;  // 사용자를 오른쪽으로 이동시킵니다.
+            rect_user.right += 5;
+            break;
+        case VK_UP:
+            rect_user.top -= 5;    // 사용자를 위로 이동시킵니다.
+            rect_user.bottom -= 5;
+            break;
+        case VK_DOWN:
+            rect_user.top += 5;    // 사용자를 아래로 이동시킵니다.
+            rect_user.bottom += 5;
+            break;
+        }
+        // 키를 눌렀을 때만 화면을 갱신합니다.
+        if (isKeyPressed) {
+            InvalidateRect(hwnd, NULL, TRUE); // 화면을 다시 그립니다.
+        }
+        break;
+
+    case WM_KEYUP:
+        isKeyPressed = 0; // 키가 떼졌음을 나타내는 플래그를 설정합니다.
+        break;
+
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hwnd, &ps); // 그림 그리기를 시작합니다.
+
+        FillRect(hdc, &rect_target, hBrush_target); // 타겟 사각형을 핑크색으로 채웁니다.
+
+        if (isKeyPressed && rect_user.left >= rect_target.left &&
+            rect_user.top >= rect_target.top &&
+            rect_user.right <= rect_target.right &&
+            rect_user.bottom <= rect_target.bottom)
+        {
+            TextOut(hdc, 10, 10, text, lstrlen(text)); // 사용자가 사각형 안에 있으면 "Crash!!" 텍스트를 표시합니다.
+        }
+
+        if (isKeyPressed)
+        {
+            FillRect(hdc, &rect_user, hBrush_user); // 사용자 사각형을 파란색으로 채웁니다.
+        }
+
+        EndPaint(hwnd, &ps); // 그림 그리기를 종료합니다.
+    }
+    break;
+
+    case WM_CLOSE:
+        DestroyWindow(hwnd); // 윈도우를 파괴합니다.
+        break;
+
+    case WM_DESTROY:
+        PostQuitMessage(0); // 프로그램을 종료합니다.
+        break;
+
+    default:
+        return DefWindowProc(hwnd, uMsg, wParam, lParam); // 기본 윈도우 프로시저로 메시지를 전달합니다.
+    }
+
+    DeleteObject(hBrush_user); // 사용자 사각형을 채우는 브러시를 삭제합니다.
+    DeleteObject(hBrush_target); // 타겟 사각형을 채우는 브러시를 삭제합니다.
+    DeleteObject(hBrush_eraser); // 화면을 지우는 브러시를 삭제합니다.
+    ReleaseDC(hwnd, hdc); // 윈도우 디바이스 컨텍스트를 해제합니다.
+
+    return S_OK;
+}
+
+#ifdef UNICODE
+int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nShowCmd)
+#else
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR pCmdLine, _In_ int nCmdShow)
+#endif
+{
+    WNDCLASS wc;
+    ZeroMemory(&wc, sizeof(wc)); // 윈도우 클래스를 초기화합니다.
+
+    wc.hInstance = hInstance;
+    wc.lpszClassName = TEXT("Computer Software"); // 윈도우 클래스 이름을 설정합니다.
+    wc.hIcon = LoadIcon(NULL, IDI_APPLICATION); // 아이콘을 설정합니다.
+    wc.hCursor = LoadCursor(NULL, IDC_CROSS); // 커서를 설정합니다.
+    wc.style = CS_HREDRAW | CS_VREDRAW; // 윈도우 스타일을 설정합니다.
+    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1); // 배경 브러시를 설정합니다.
+    wc.lpfnWndProc = WindowProc; // 윈도우 프로시저를 설정합니다.
+
+    if (RegisterClass(&wc) == 0)
+    {
+        MessageBox(NULL, L"RegisterClass failed!", L"Error", MB_ICONERROR);
+        exit(-1); // 예외 처리
+    }
+
+    RECT rect = { 150, 100, 800, 600 }; // 윈도우의 초기 위치와 크기를 설정합니다.
+    AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, 0); // 윈도우 스타일을 고려하여 윈도우 크기를 조정합니다.
+    int width = rect.right - rect.left;
+    int height = rect.bottom - rect.top;
+
+    HWND hwnd = CreateWindow(
+        wc.lpszClassName,
+        TEXT("컴소 Application"), // 윈도우 제목을 설정합니다.
+        WS_OVERLAPPEDWINDOW,
+        0, 0,
+        width, height,
+        NULL, NULL,
+        hInstance,
+        NULL
+    );
+
+    if (hwnd == NULL)
+    {
+        MessageBox(NULL, L"CreateWindow failed!", L"Error", MB_ICONERROR);
+        exit(-1);
+    }
+
+    ShowWindow(hwnd, SW_SHOW); // 윈도우를 화면에 표시합니다.
+    UpdateWindow(hwnd); // 윈도우를 업데이트하여 보이게 합니다.
+
+    MSG msg;
+    ZeroMemory(&msg, sizeof(msg));
+
+    while (msg.message != WM_QUIT)
+    {
+        if (GetMessage(&msg, NULL, 0, 0))
+        {
+            TranslateMessage(&msg); // 메시지를 해석합니다.
+            DispatchMessage(&msg); // 메시지를 처리해야 할 곳에 전달합니다.
+        }
+    }
+
+    UnregisterClass(wc.lpszClassName, wc.hInstance); // 윈도우 클래스를 등록 해제합니다.
+
+    return (int)msg.wParam;
+}
