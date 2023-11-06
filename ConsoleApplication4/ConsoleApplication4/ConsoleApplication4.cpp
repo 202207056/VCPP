@@ -1,4 +1,4 @@
-#include <Windows.h>
+ï»¿#include <Windows.h>
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -46,8 +46,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     break;
     case WM_CREATE:
     {
-        // ¹öÆ°¿¡ ÀÌ¸§¿¡ ¸Â´Â ID ºÎ¿©
-        int buttonIDs[] = { 1001, 1002, 1003, 1004, 1005 }; // ¿¹½Ã ID °ª
+        // ë²„íŠ¼ì— ì´ë¦„ì— ë§ëŠ” ID ë¶€ì—¬
+        int buttonIDs[] = { 1001, 1002, 1003, 1004, 1005 }; // ì˜ˆì‹œ ID ê°’
         LPCWSTR buttonLabels[] = { L"Box", L"Circle", L"Bonobono", L"Ryan", L"Cube" };
 
         for (int i = 0; i < 5; i++)
@@ -58,26 +58,26 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
                 16 + i * (130 + 16) + margin, 25, 120, 32,
                 hwnd,
-                (HMENU)(buttonIDs[i]), // ¹öÆ°¿¡ ID ºÎ¿©
+                (HMENU)(buttonIDs[i]), // ë²„íŠ¼ì— ID ë¶€ì—¬
                 ((LPCREATESTRUCT)lParam)->hInstance,
                 NULL
             );
         }
 
-        // Box »ı¼º
+        // Box ìƒì„±
         CreateWindow(
             L"STATIC",
             L"",
             WS_CHILD | WS_VISIBLE | SS_NOTIFY,
             margin + boxMargin, 25 + 32 + boxMargin, 782 - 2 * margin - 2 * boxMargin, 435 - 25 - 32 - margin - 2 * boxMargin,
             hwnd,
-            (HMENU)(6), // ±âÁ¸´ë·Î
+            (HMENU)(6), // ê¸°ì¡´ëŒ€ë¡œ
             ((LPCREATESTRUCT)lParam)->hInstance,
             NULL
         );
     }
     break;
-    // Ãß°¡: ¹öÆ° Å¬¸¯ ÀÌº¥Æ® Ã³¸®
+    // ì¶”ê°€: ë²„íŠ¼ í´ë¦­ ì´ë²¤íŠ¸ ì²˜ë¦¬
     case WM_COMMAND:
     {
         int buttonID = LOWORD(wParam);
@@ -89,10 +89,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
         HDC hdc;
 
-        // ¹öÆ° ID¸¦ È®ÀÎÇÏ°í ¿øÇÏ´Â ÀÛ¾÷ ¼öÇà
+        // ë²„íŠ¼ IDë¥¼ í™•ì¸í•˜ê³  ì›í•˜ëŠ” ì‘ì—… ìˆ˜í–‰
         switch (buttonID)
         {
-        case 1001: // Box ¹öÆ°
+        case 1001: // Box ë²„íŠ¼
         {
 
         }
@@ -105,48 +105,48 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 int centerX = (boxRect.left + boxRect.right) / 2;
                 int centerY = (boxRect.top + boxRect.bottom) / 1.4;
 
-                int largeWidth = 350; // Å« ÇÏ´Ã»ö ¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int largeHeight = 350; // Å« ÇÏ´Ã»ö ¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int smallWidth = 50;  // °ËÀº»ö ¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int smallHeight = 45; // °ËÀº»ö ¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int whiteWidth = 65;  // Èò»ö ¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int whiteHeight = 55; // Èò»ö ¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int verticalEllipseWidth = 50; // ¼¼·Î·Î ´¯Èù Å¸¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int verticalEllipseHeight = 80; // ¼¼·Î·Î ´¯Èù Å¸¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int eyeWidth = 15;    // ´«ÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int eyeHeight = 25;   // ´«ÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int wheyeWidth = 5;   // ´«µ¿ÀÚ °¡·Î
-                int wheyeHeight = 10;  // ´«µ¿ÀÚ ¼¼·Î
+                int largeWidth = 350; // í° í•˜ëŠ˜ìƒ‰ ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int largeHeight = 350; // í° í•˜ëŠ˜ìƒ‰ ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int smallWidth = 50;  // ê²€ì€ìƒ‰ ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int smallHeight = 45; // ê²€ì€ìƒ‰ ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int whiteWidth = 65;  // í°ìƒ‰ ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int whiteHeight = 55; // í°ìƒ‰ ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int verticalEllipseWidth = 50; // ì„¸ë¡œë¡œ ëˆ•íŒ íƒ€ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int verticalEllipseHeight = 80; // ì„¸ë¡œë¡œ ëˆ•íŒ íƒ€ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int eyeWidth = 15;    // ëˆˆì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int eyeHeight = 25;   // ëˆˆì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int wheyeWidth = 5;   // ëˆˆë™ì ê°€ë¡œ
+                int wheyeHeight = 10;  // ëˆˆë™ì ì„¸ë¡œ
 
                 hdc = GetDC(hwnd);
 
-                // Å« ÇÏ´Ã»ö ¿ø ±×¸®±â
+                // í° í•˜ëŠ˜ìƒ‰ ì› ê·¸ë¦¬ê¸°
                 HBRUSH blueBrush = CreateSolidBrush(RGB(91, 155, 213));
                 SelectObject(hdc, blueBrush);
                 Ellipse(hdc, centerX - largeWidth / 2, centerY - largeHeight / 2, centerX + largeWidth / 2, centerY + largeHeight / 2);
                 DeleteObject(blueBrush);
 
 
-                // ¼¼·Î·Î ´¯Èù Å¸¿ø ±×¸®±â (¾Æ·¡¿¡)
+                // ì„¸ë¡œë¡œ ëˆ•íŒ íƒ€ì› ê·¸ë¦¬ê¸° (ì•„ë˜ì—)
                 HBRUSH verticalEllipseBrush = CreateSolidBrush(RGB(251, 150, 251));
                 SelectObject(hdc, verticalEllipseBrush);
                 Ellipse(hdc, centerX - verticalEllipseWidth / 2, centerY - 3 + smallHeight / 2, centerX + verticalEllipseWidth / 2, centerY - 3 + smallHeight / 2 + verticalEllipseHeight);
                 DeleteObject(verticalEllipseBrush);
 
 
-                // Èò»ö ¿ø ±×¸®±â (¿ŞÂÊ)
+                // í°ìƒ‰ ì› ê·¸ë¦¬ê¸° (ì™¼ìª½)
                 HBRUSH whiteBrush = CreateSolidBrush(RGB(255, 255, 255));
                 SelectObject(hdc, whiteBrush);
                 Ellipse(hdc, centerX - whiteWidth, centerY - 3, centerX, centerY - 3 + whiteHeight);
-                // µÎ ¹øÂ° Èò»ö ¿ø ±×¸®±â (¿À¸¥ÂÊ¿¡ ÀÌ¾îºÙÀÓ)
+                // ë‘ ë²ˆì§¸ í°ìƒ‰ ì› ê·¸ë¦¬ê¸° (ì˜¤ë¥¸ìª½ì— ì´ì–´ë¶™ì„)
                 Ellipse(hdc, centerX, centerY - 3, centerX + whiteWidth, centerY - 3 + whiteHeight);
                 DeleteObject(whiteBrush);
 
-                int xOffset = -1; // ¿ŞÂÊÀ¸·Î 10 ÇÈ¼¿ ÀÌµ¿
+                int xOffset = -1; // ì™¼ìª½ìœ¼ë¡œ 10 í”½ì…€ ì´ë™
                 int yOffset = 20;
                 float angle = 45.0f;
 
-                // '<' ¸¸µé±â
+                // '<' ë§Œë“¤ê¸°
                 int leftLine1StartX = centerX - whiteWidth + xOffset;
                 int leftLine1StartY = centerY + whiteHeight / 4 + yOffset;
                 int leftLine1EndX = centerX + xOffset - whiteWidth / 2;
@@ -161,7 +161,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 MoveToEx(hdc, leftLine2StartX, leftLine2StartY, NULL);
                 LineTo(hdc, leftLine2EndX, leftLine2EndY);
 
-                // '>' ¸¸µé±â
+                // '>' ë§Œë“¤ê¸°
                 int rightLine1StartX = centerX + xOffset + whiteWidth / 2;
                 int rightLine1StartY = centerY + yOffset + 10;
                 int rightLine1EndX = centerX + whiteWidth + xOffset;
@@ -176,28 +176,28 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 MoveToEx(hdc, rightLine2StartX, rightLine2StartY, NULL);
                 LineTo(hdc, rightLine2EndX, rightLine2EndY);
 
-                // ÀÛÀº °ËÁ¤»ö ¿ø ±×¸®±â (Áß¾Ó¿¡)
+                // ì‘ì€ ê²€ì •ìƒ‰ ì› ê·¸ë¦¬ê¸° (ì¤‘ì•™ì—)
                 HBRUSH blackBrush = CreateSolidBrush(RGB(0, 0, 0));
                 SelectObject(hdc, blackBrush);
                 Ellipse(hdc, centerX - smallWidth / 2, centerY - smallHeight / 2, centerX + smallWidth / 2, centerY + smallHeight / 2);
 
 
-                // ¿ŞÂÊ ´« ±×¸®±â (¿ŞÂÊÀ¸·Î ÀÌµ¿)
+                // ì™¼ìª½ ëˆˆ ê·¸ë¦¬ê¸° (ì™¼ìª½ìœ¼ë¡œ ì´ë™)
                 Ellipse(hdc, centerX - whiteWidth - eyeWidth - 50, centerY - 30 - eyeHeight / 2, centerX - whiteWidth - 50, centerY - 30 + eyeHeight / 2);
                 DeleteObject(blackBrush);
 
-                // ¿À¸¥ÂÊ ´« ±×¸®±â (¿À¸¥ÂÊÀ¸·Î ÀÌµ¿)
+                // ì˜¤ë¥¸ìª½ ëˆˆ ê·¸ë¦¬ê¸° (ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™)
                 Ellipse(hdc, centerX + whiteWidth + 50, centerY - 30 - eyeHeight / 2, centerX + whiteWidth + eyeWidth + 50, centerY - 30 + eyeHeight / 2);
                 DeleteObject(blackBrush);
 
 
-                // ¿ŞÂÊ ´« ±×¸®±â (¿ŞÂÊÀ¸·Î ÀÌµ¿)
+                // ì™¼ìª½ ëˆˆ ê·¸ë¦¬ê¸° (ì™¼ìª½ìœ¼ë¡œ ì´ë™)
                 HBRUSH smallwhiteBrush = CreateSolidBrush(RGB(255, 255, 255));
                 SelectObject(hdc, smallwhiteBrush);
                 Ellipse(hdc, centerX - whiteWidth - wheyeWidth - 55, centerY - 30 - wheyeHeight / 2, centerX - whiteWidth - 55, centerY - 30 + wheyeHeight / 2);
                 DeleteObject(smallwhiteBrush);
 
-                // ¿À¸¥ÂÊ ´« ±×¸®±â (¿À¸¥ÂÊÀ¸·Î ÀÌµ¿)
+                // ì˜¤ë¥¸ìª½ ëˆˆ ê·¸ë¦¬ê¸° (ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™)
                 Ellipse(hdc, centerX + whiteWidth + 55, centerY - 30 - wheyeHeight / 2, centerX + whiteWidth + wheyeWidth + 55, centerY - 30 + wheyeHeight / 2);
                 DeleteObject(smallwhiteBrush);
 
@@ -219,48 +219,48 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 int centerX = (boxRect.left + boxRect.right) / 2;
                 int centerY = (boxRect.top + boxRect.bottom) / 1.4;
 
-                int largeWidth = 350; // Å« ÇÏ´Ã»ö ¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int largeHeight = 350; // Å« ÇÏ´Ã»ö ¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int smallWidth = 50;  // °ËÀº»ö ¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int smallHeight = 45; // °ËÀº»ö ¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int whiteWidth = 65;  // Èò»ö ¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int whiteHeight = 55; // Èò»ö ¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int verticalEllipseWidth = 50; // ¼¼·Î·Î ´¯Èù Å¸¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int verticalEllipseHeight = 80; // ¼¼·Î·Î ´¯Èù Å¸¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int eyeWidth = 15;    // ´«ÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int eyeHeight = 25;   // ´«ÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int wheyeWidth = 5;   // ´«µ¿ÀÚ °¡·Î
-                int wheyeHeight = 10;  // ´«µ¿ÀÚ ¼¼·Î
+                int largeWidth = 350; // í° í•˜ëŠ˜ìƒ‰ ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int largeHeight = 350; // í° í•˜ëŠ˜ìƒ‰ ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int smallWidth = 50;  // ê²€ì€ìƒ‰ ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int smallHeight = 45; // ê²€ì€ìƒ‰ ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int whiteWidth = 65;  // í°ìƒ‰ ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int whiteHeight = 55; // í°ìƒ‰ ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int verticalEllipseWidth = 50; // ì„¸ë¡œë¡œ ëˆ•íŒ íƒ€ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int verticalEllipseHeight = 80; // ì„¸ë¡œë¡œ ëˆ•íŒ íƒ€ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int eyeWidth = 15;    // ëˆˆì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int eyeHeight = 25;   // ëˆˆì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int wheyeWidth = 5;   // ëˆˆë™ì ê°€ë¡œ
+                int wheyeHeight = 10;  // ëˆˆë™ì ì„¸ë¡œ
 
                 HDC hdc = GetDC(hwnd);
 
-                // Å« ÇÏ´Ã»ö ¿ø ±×¸®±â
+                // í° í•˜ëŠ˜ìƒ‰ ì› ê·¸ë¦¬ê¸°
                 HBRUSH blueBrush = CreateSolidBrush(RGB(91, 155, 213));
                 SelectObject(hdc, blueBrush);
                 Ellipse(hdc, centerX - largeWidth / 2, centerY - largeHeight / 2, centerX + largeWidth / 2, centerY + largeHeight / 2);
                 DeleteObject(blueBrush);
 
 
-                // ¼¼·Î·Î ´¯Èù Å¸¿ø ±×¸®±â (¾Æ·¡¿¡)
+                // ì„¸ë¡œë¡œ ëˆ•íŒ íƒ€ì› ê·¸ë¦¬ê¸° (ì•„ë˜ì—)
                 HBRUSH verticalEllipseBrush = CreateSolidBrush(RGB(251, 150, 251));
                 SelectObject(hdc, verticalEllipseBrush);
                 Ellipse(hdc, centerX - verticalEllipseWidth / 2, centerY - 3 + smallHeight / 2, centerX + verticalEllipseWidth / 2, centerY - 3 + smallHeight / 2 + verticalEllipseHeight);
                 DeleteObject(verticalEllipseBrush);
 
 
-                // Èò»ö ¿ø ±×¸®±â (¿ŞÂÊ)
+                // í°ìƒ‰ ì› ê·¸ë¦¬ê¸° (ì™¼ìª½)
                 HBRUSH whiteBrush = CreateSolidBrush(RGB(255, 255, 255));
                 SelectObject(hdc, whiteBrush);
                 Ellipse(hdc, centerX - whiteWidth, centerY - 3, centerX, centerY - 3 + whiteHeight);
-                // µÎ ¹øÂ° Èò»ö ¿ø ±×¸®±â (¿À¸¥ÂÊ¿¡ ÀÌ¾îºÙÀÓ)
+                // ë‘ ë²ˆì§¸ í°ìƒ‰ ì› ê·¸ë¦¬ê¸° (ì˜¤ë¥¸ìª½ì— ì´ì–´ë¶™ì„)
                 Ellipse(hdc, centerX, centerY - 3, centerX + whiteWidth, centerY - 3 + whiteHeight);
                 DeleteObject(whiteBrush);
 
-                int xOffset = -1; // ¿ŞÂÊÀ¸·Î 10 ÇÈ¼¿ ÀÌµ¿
+                int xOffset = -1; // ì™¼ìª½ìœ¼ë¡œ 10 í”½ì…€ ì´ë™
                 int yOffset = 20;
                 float angle = 45.0f;
 
-                // '<' ¸¸µé±â
+                // '<' ë§Œë“¤ê¸°
                 int leftLine1StartX = centerX - whiteWidth + xOffset;
                 int leftLine1StartY = centerY + whiteHeight / 4 + yOffset;
                 int leftLine1EndX = centerX + xOffset - whiteWidth / 2;
@@ -275,7 +275,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 MoveToEx(hdc, leftLine2StartX, leftLine2StartY, NULL);
                 LineTo(hdc, leftLine2EndX, leftLine2EndY);
 
-                // '>' ¸¸µé±â
+                // '>' ë§Œë“¤ê¸°
                 int rightLine1StartX = centerX + xOffset + whiteWidth / 2;
                 int rightLine1StartY = centerY + yOffset + 10;
                 int rightLine1EndX = centerX + whiteWidth + xOffset;
@@ -290,37 +290,37 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 MoveToEx(hdc, rightLine2StartX, rightLine2StartY, NULL);
                 LineTo(hdc, rightLine2EndX, rightLine2EndY);
 
-                // ÀÛÀº °ËÁ¤»ö ¿ø ±×¸®±â (Áß¾Ó¿¡)
+                // ì‘ì€ ê²€ì •ìƒ‰ ì› ê·¸ë¦¬ê¸° (ì¤‘ì•™ì—)
                 HBRUSH blackBrush = CreateSolidBrush(RGB(0, 0, 0));
                 SelectObject(hdc, blackBrush);
                 Ellipse(hdc, centerX - smallWidth / 2, centerY - smallHeight / 2, centerX + smallWidth / 2, centerY + smallHeight / 2);
 
-                // ¿ŞÂÊ´« ±ôºı
-                int lefteye1StartX = centerX - whiteWidth + xOffset - 90; // 90 ÇÈ¼¿ ¿ŞÂÊÀ¸·Î ÀÌµ¿
+                // ì™¼ìª½ëˆˆ ê¹œë¹¡
+                int lefteye1StartX = centerX - whiteWidth + xOffset - 90; // 90 í”½ì…€ ì™¼ìª½ìœ¼ë¡œ ì´ë™
                 int lefteye1StartY = centerY + whiteHeight / 4 + yOffset;
-                int lefteye1EndX = centerX + xOffset - whiteWidth / 2 - 90; // 90 ÇÈ¼¿ ¿ŞÂÊÀ¸·Î ÀÌµ¿
+                int lefteye1EndX = centerX + xOffset - whiteWidth / 2 - 90; // 90 í”½ì…€ ì™¼ìª½ìœ¼ë¡œ ì´ë™
                 int lefteye1EndY = centerY + yOffset;
                 MoveToEx(hdc, leftLine1StartX, leftLine1StartY, NULL);
                 LineTo(hdc, leftLine1EndX, leftLine1EndY);
 
-                int lefteye2StartX = centerX - whiteWidth + xOffset - 90; // 90 ÇÈ¼¿ ¿ŞÂÊÀ¸·Î ÀÌµ¿
+                int lefteye2StartX = centerX - whiteWidth + xOffset - 90; // 90 í”½ì…€ ì™¼ìª½ìœ¼ë¡œ ì´ë™
                 int lefteye2StartY = centerY - whiteHeight / 4 + yOffset;
-                int lefteye2EndX = centerX + xOffset - whiteWidth / 2 - 90; // 90 ÇÈ¼¿ ¿ŞÂÊÀ¸·Î ÀÌµ¿
+                int lefteye2EndX = centerX + xOffset - whiteWidth / 2 - 90; // 90 í”½ì…€ ì™¼ìª½ìœ¼ë¡œ ì´ë™
                 int lefteye2EndY = centerY + yOffset;
                 MoveToEx(hdc, leftLine2StartX, leftLine2StartY, NULL);
                 LineTo(hdc, leftLine2EndX, leftLine2EndY);
 
-                // ¿À¸¥ÂÊ´« ±ôºı
-                int righteye1StartX = centerX + xOffset + whiteWidth / 2 + 70; // 10 ÇÈ¼¿ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿
+                // ì˜¤ë¥¸ìª½ëˆˆ ê¹œë¹¡
+                int righteye1StartX = centerX + xOffset + whiteWidth / 2 + 70; // 10 í”½ì…€ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™
                 int righteye1StartY = centerY + yOffset;
-                int righteye1EndX = centerX + whiteWidth + xOffset + 70; // 10 ÇÈ¼¿ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿
+                int righteye1EndX = centerX + whiteWidth + xOffset + 70; // 10 í”½ì…€ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™
                 int righteye1EndY = centerY + whiteHeight / 4 + yOffset;
                 MoveToEx(hdc, rightLine1StartX, rightLine1StartY, NULL);
                 LineTo(hdc, rightLine1EndX, rightLine1EndY);
 
-                int righteye2StartX = centerX + xOffset + whiteWidth / 2 + 70; // 10 ÇÈ¼¿ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿
+                int righteye2StartX = centerX + xOffset + whiteWidth / 2 + 70; // 10 í”½ì…€ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™
                 int righteye2StartY = centerY + yOffset;
-                int righteye2EndX = centerX + whiteWidth + xOffset + 70; // 10 ÇÈ¼¿ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿
+                int righteye2EndX = centerX + whiteWidth + xOffset + 70; // 10 í”½ì…€ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™
                 int righteye2EndY = centerY - whiteHeight / 4 + yOffset;
                 MoveToEx(hdc, rightLine2StartX, rightLine2StartY, NULL);
                 LineTo(hdc, rightLine2EndX, rightLine2EndY);
@@ -340,48 +340,48 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 int centerX = (boxRect.left + boxRect.right) / 2;
                 int centerY = (boxRect.top + boxRect.bottom) / 1.4;
 
-                int largeWidth = 350; // Å« ÇÏ´Ã»ö ¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int largeHeight = 350; // Å« ÇÏ´Ã»ö ¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int smallWidth = 50;  // °ËÀº»ö ¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int smallHeight = 45; // °ËÀº»ö ¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int whiteWidth = 65;  // Èò»ö ¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int whiteHeight = 55; // Èò»ö ¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int verticalEllipseWidth = 50; // ¼¼·Î·Î ´¯Èù Å¸¿øÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int verticalEllipseHeight = 80; // ¼¼·Î·Î ´¯Èù Å¸¿øÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int eyeWidth = 15;    // ´«ÀÇ °¡·Î Å©±â (ÇÈ¼¿)
-                int eyeHeight = 25;   // ´«ÀÇ ¼¼·Î Å©±â (ÇÈ¼¿)
-                int wheyeWidth = 5;   // ´«µ¿ÀÚ °¡·Î
-                int wheyeHeight = 10;  // ´«µ¿ÀÚ ¼¼·Î
+                int largeWidth = 350; // í° í•˜ëŠ˜ìƒ‰ ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int largeHeight = 350; // í° í•˜ëŠ˜ìƒ‰ ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int smallWidth = 50;  // ê²€ì€ìƒ‰ ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int smallHeight = 45; // ê²€ì€ìƒ‰ ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int whiteWidth = 65;  // í°ìƒ‰ ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int whiteHeight = 55; // í°ìƒ‰ ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int verticalEllipseWidth = 50; // ì„¸ë¡œë¡œ ëˆ•íŒ íƒ€ì›ì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int verticalEllipseHeight = 80; // ì„¸ë¡œë¡œ ëˆ•íŒ íƒ€ì›ì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int eyeWidth = 15;    // ëˆˆì˜ ê°€ë¡œ í¬ê¸° (í”½ì…€)
+                int eyeHeight = 25;   // ëˆˆì˜ ì„¸ë¡œ í¬ê¸° (í”½ì…€)
+                int wheyeWidth = 5;   // ëˆˆë™ì ê°€ë¡œ
+                int wheyeHeight = 10;  // ëˆˆë™ì ì„¸ë¡œ
 
                 hdc = GetDC(hwnd);
 
-                // Å« ÇÏ´Ã»ö ¿ø ±×¸®±â
+                // í° í•˜ëŠ˜ìƒ‰ ì› ê·¸ë¦¬ê¸°
                 HBRUSH blueBrush = CreateSolidBrush(RGB(91, 155, 213));
                 SelectObject(hdc, blueBrush);
                 Ellipse(hdc, centerX - largeWidth / 2, centerY - largeHeight / 2, centerX + largeWidth / 2, centerY + largeHeight / 2);
                 DeleteObject(blueBrush);
 
 
-                // ¼¼·Î·Î ´¯Èù Å¸¿ø ±×¸®±â (¾Æ·¡¿¡)
+                // ì„¸ë¡œë¡œ ëˆ•íŒ íƒ€ì› ê·¸ë¦¬ê¸° (ì•„ë˜ì—)
                 HBRUSH verticalEllipseBrush = CreateSolidBrush(RGB(251, 150, 251));
                 SelectObject(hdc, verticalEllipseBrush);
                 Ellipse(hdc, centerX - verticalEllipseWidth / 2, centerY - 3 + smallHeight / 2, centerX + verticalEllipseWidth / 2, centerY - 3 + smallHeight / 2 + verticalEllipseHeight);
                 DeleteObject(verticalEllipseBrush);
 
 
-                // Èò»ö ¿ø ±×¸®±â (¿ŞÂÊ)
+                // í°ìƒ‰ ì› ê·¸ë¦¬ê¸° (ì™¼ìª½)
                 HBRUSH whiteBrush = CreateSolidBrush(RGB(255, 255, 255));
                 SelectObject(hdc, whiteBrush);
                 Ellipse(hdc, centerX - whiteWidth, centerY - 3, centerX, centerY - 3 + whiteHeight);
-                // µÎ ¹øÂ° Èò»ö ¿ø ±×¸®±â (¿À¸¥ÂÊ¿¡ ÀÌ¾îºÙÀÓ)
+                // ë‘ ë²ˆì§¸ í°ìƒ‰ ì› ê·¸ë¦¬ê¸° (ì˜¤ë¥¸ìª½ì— ì´ì–´ë¶™ì„)
                 Ellipse(hdc, centerX, centerY - 3, centerX + whiteWidth, centerY - 3 + whiteHeight);
                 DeleteObject(whiteBrush);
 
-                int xOffset = -1; // ¿ŞÂÊÀ¸·Î 10 ÇÈ¼¿ ÀÌµ¿
+                int xOffset = -1; // ì™¼ìª½ìœ¼ë¡œ 10 í”½ì…€ ì´ë™
                 int yOffset = 20;
                 float angle = 45.0f;
 
-                // '<' ¸¸µé±â
+                // '<' ë§Œë“¤ê¸°
                 int leftLine1StartX = centerX - whiteWidth + xOffset;
                 int leftLine1StartY = centerY + whiteHeight / 4 + yOffset;
                 int leftLine1EndX = centerX + xOffset - whiteWidth / 2;
@@ -396,7 +396,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 MoveToEx(hdc, leftLine2StartX, leftLine2StartY, NULL);
                 LineTo(hdc, leftLine2EndX, leftLine2EndY);
 
-                // '>' ¸¸µé±â
+                // '>' ë§Œë“¤ê¸°
                 int rightLine1StartX = centerX + xOffset + whiteWidth / 2;
                 int rightLine1StartY = centerY + yOffset + 10;
                 int rightLine1EndX = centerX + whiteWidth + xOffset;
@@ -411,28 +411,28 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 MoveToEx(hdc, rightLine2StartX, rightLine2StartY, NULL);
                 LineTo(hdc, rightLine2EndX, rightLine2EndY);
 
-                // ÀÛÀº °ËÁ¤»ö ¿ø ±×¸®±â (Áß¾Ó¿¡)
+                // ì‘ì€ ê²€ì •ìƒ‰ ì› ê·¸ë¦¬ê¸° (ì¤‘ì•™ì—)
                 HBRUSH blackBrush = CreateSolidBrush(RGB(0, 0, 0));
                 SelectObject(hdc, blackBrush);
                 Ellipse(hdc, centerX - smallWidth / 2, centerY - smallHeight / 2, centerX + smallWidth / 2, centerY + smallHeight / 2);
 
 
-                // ¿ŞÂÊ ´« ±×¸®±â (¿ŞÂÊÀ¸·Î ÀÌµ¿)
+                // ì™¼ìª½ ëˆˆ ê·¸ë¦¬ê¸° (ì™¼ìª½ìœ¼ë¡œ ì´ë™)
                 Ellipse(hdc, centerX - whiteWidth - eyeWidth - 50, centerY - 30 - eyeHeight / 2, centerX - whiteWidth - 50, centerY - 30 + eyeHeight / 2);
                 DeleteObject(blackBrush);
 
-                // ¿À¸¥ÂÊ ´« ±×¸®±â (¿À¸¥ÂÊÀ¸·Î ÀÌµ¿)
+                // ì˜¤ë¥¸ìª½ ëˆˆ ê·¸ë¦¬ê¸° (ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™)
                 Ellipse(hdc, centerX + whiteWidth + 50, centerY - 30 - eyeHeight / 2, centerX + whiteWidth + eyeWidth + 50, centerY - 30 + eyeHeight / 2);
                 DeleteObject(blackBrush);
 
 
-                // ¿ŞÂÊ ´« ±×¸®±â (¿ŞÂÊÀ¸·Î ÀÌµ¿)
+                // ì™¼ìª½ ëˆˆ ê·¸ë¦¬ê¸° (ì™¼ìª½ìœ¼ë¡œ ì´ë™)
                 HBRUSH smallwhiteBrush = CreateSolidBrush(RGB(255, 255, 255));
                 SelectObject(hdc, smallwhiteBrush);
                 Ellipse(hdc, centerX - whiteWidth - wheyeWidth - 55, centerY - 30 - wheyeHeight / 2, centerX - whiteWidth - 55, centerY - 30 + wheyeHeight / 2);
                 DeleteObject(smallwhiteBrush);
 
-                // ¿À¸¥ÂÊ ´« ±×¸®±â (¿À¸¥ÂÊÀ¸·Î ÀÌµ¿)
+                // ì˜¤ë¥¸ìª½ ëˆˆ ê·¸ë¦¬ê¸° (ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™)
                 Ellipse(hdc, centerX + whiteWidth + 55, centerY - 30 - wheyeHeight / 2, centerX + whiteWidth + wheyeWidth + 55, centerY - 30 + wheyeHeight / 2);
                 DeleteObject(smallwhiteBrush);
                 ReleaseDC(hwnd, hdc);
@@ -442,7 +442,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         }
         break;
 
-        // ³ª¸ÓÁö ¹öÆ° Ã³¸®
+        // ë‚˜ë¨¸ì§€ ë²„íŠ¼ ì²˜ë¦¬
         // ...
         }
     }
@@ -466,7 +466,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     if (!RegisterClassEx(&wc))
     {
-        MessageBox(NULL, L"À©µµ¿ì Å¬·¡½º µî·Ï ½ÇÆĞ!", L"¿¡·¯", MB_ICONERROR);
+        MessageBox(NULL, L"ìœˆë„ìš° í´ë˜ìŠ¤ ë“±ë¡ ì‹¤íŒ¨!", L"ì—ëŸ¬", MB_ICONERROR);
         return 1;
     }
 
@@ -484,7 +484,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     if (!hwnd)
     {
-        MessageBox(NULL, L"À©µµ¿ì »ı¼º ½ÇÆĞ!", L"¿¡·¯", MB_ICONERROR);
+        MessageBox(NULL, L"ìœˆë„ìš° ìƒì„± ì‹¤íŒ¨!", L"ì—ëŸ¬", MB_ICONERROR);
         return 1;
     }
 
